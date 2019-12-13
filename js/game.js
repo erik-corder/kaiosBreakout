@@ -19,13 +19,14 @@ var SCORE = 0;
 var SCORE_UNITE = 10;
 var LEVEL = 1;
 var MAX_LEVEL = 3;
-var LIFE = 3
+var LIFE = 3;
+var GAME_OVER = false;
 var leftArrow = false;
 var rightArrow = false;
 
 /////// LOAD IMAGES ////////
 const BG_IMG = new Image();
-BG_IMG.src = "img/bg.jpg";
+BG_IMG.src = "img/bg1.jpg";
 
 const LEVEL_IMG = new Image();
 LEVEL_IMG.src = "img/level.png";
@@ -151,7 +152,7 @@ function ballPaddleCollision() {
 }
 
 const brick = {
-    row: 3,
+    row: 1,
     column: 5,
     width: 55,
     height: 20,
@@ -231,6 +232,32 @@ function draw() {
     showGameStatus(LEVEL, cvs.width/2, 25, LIFE_IMG, cvs.width/2-30, 5);
 }
 
+function gameOver(){
+    if(LIFE <= 0){
+        GAME_OVER = true;
+    }
+}
+
+//level up 
+function levelUp(){
+    for (var r = 0; r < brick.row; r++) {
+        for (var c = 0; c < brick.column; c++) {
+          isLevelDone = isLevelDone && !brick[r][c].status;
+        }
+    }
+    if(isLevelDone){
+        if(LEVEL >= MAX_LEVEL){
+            GAME_OVER = true;
+            return;
+        }
+        brick.row++;
+        createBricks();
+        ball.speed +=0.5;
+        resetBall();
+        LEVEL++;
+    }
+}
+
 //update
 function update() {
     movePaddle();
@@ -238,6 +265,7 @@ function update() {
     ballWallcollision();
     ballPaddleCollision();
     ballBrickCollision();
+    gameOver();
 }
 
 //game loop
@@ -246,8 +274,9 @@ function loop() {
     draw();
 
     update();
-
-    requestAnimationFrame(loop);
+    if(! GAME_OVER){
+        requestAnimationFrame(loop);
+    }    
 }
 
 loop();
