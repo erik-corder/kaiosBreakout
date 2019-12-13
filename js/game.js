@@ -152,7 +152,7 @@ function ballPaddleCollision() {
 }
 
 const brick = {
-    row: 1,
+    row: 3,
     column: 5,
     width: 55,
     height: 20,
