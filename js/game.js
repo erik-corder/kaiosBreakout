@@ -17,6 +17,8 @@ const PADDLE_HEIGHT = 20;
 const BALL_REDIUS = 8;
 var SCORE = 0;
 var SCORE_UNITE = 10;
+var LEVEL = 1;
+var MAX_LEVEL = 3;
 var LIFE = 3
 var leftArrow = false;
 var rightArrow = false;
@@ -24,6 +26,15 @@ var rightArrow = false;
 /////// LOAD IMAGES ////////
 const BG_IMG = new Image();
 BG_IMG.src = "img/bg.jpg";
+
+const LEVEL_IMG = new Image();
+LEVEL_IMG.src = "img/level.png";
+
+const LIFE_IMG = new Image();
+LIFE_IMG.src = "img/life.png";
+
+const SCORE_IMG = new Image();
+SCORE_IMG.src = "img/score.png";
 
 //create paddle
 const paddle = {
@@ -200,11 +211,24 @@ function ballBrickCollision(){
     }
 }
 
+//shwo game status
+function showGameStatus(text, textX, textY, img, imgX, imgY){
+    ctx.fillStyle = "#FFF";
+    ctx.font = "25px Gemania One";
+    ctx.fillText(text, textX, textY);
+
+    //draw image
+    ctx.drawImage(img, imgX, imgY, width = 25, height = 25);
+}
+
 //draw function
 function draw() {
     drawPaddle();
     drawBall();
     drawBricks();
+    showGameStatus(SCORE, 35, 25, SCORE_IMG, 5, 5);
+    showGameStatus(LIFE, cvs.width-25, 25, LIFE_IMG, cvs.width-55, 5);
+    showGameStatus(LEVEL, cvs.width/2, 25, LIFE_IMG, cvs.width/2-30, 5);
 }
 
 //update
